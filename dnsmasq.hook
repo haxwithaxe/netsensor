@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# man page excerpt
+cat - >/dev/null 2>&1 <<EOM
+--dhcp-script=<path>
+Whenever a new DHCP lease is created, or an old one destroyed, or a TFTP file
+transfer completes, the executable specified by this option is run.
+<path> must be an absolute pathname, no PATH search occurs.
+The arguments to the process are:
+- "add|old|del"
+	- "add": means a lease has been created
+	- "del": means it has been destroyed
+	- "old": is a notification of an existing lease when dnsmasq starts or a change to
+    	MAC address or hostname of an existing lease (also, lease length or expiry
+	    and client-id, if leasefile-ro is set).
+- the MAC address of the host (or DUID for IPv6)
+	- If the MAC address is from a network type other than ethernet, it will have
+		the network type prepended, eg "06-01:23:45:67:89:ab" for token ring.
+- the IP address
+- and the hostname, if known.
+
+The process is run as root (assuming that dnsmasq was originally run as root)
+	even if dnsmasq is configured to change UID to an unprivileged user.
+EOM
+# end of man page excerpt
+
+action=$1
+mac=$2
+ip_addr=$3
+host_name=$4
+
+add_entry(){
+	mac=$1
+	ip_addr=$2
+	host_name=$3
+
+}
+
+old_entry(){
+	mac=$1
+    ip_addr=$2
+    host_name=$3
+
+}
+
+del_entry(){
+	mac=$1
+    ip_addr=$2
+    host_name=$3
+
+}
+
+case "$action" in
+	"add")
+		# a lease has been created
+		add_entry $mac $ip_addr $host_name
+		;;
+	"old")
+		# an existing lease has been changed
+		old_entry $mac $ip_addr $host_name
+		;;
+	"del")
+		# a lease has been destroyed
+		deleted_entry $mac $ip_addr $host_name
+		;;
+	*)
+		echo "This should never happen."
+		;;
+esac
