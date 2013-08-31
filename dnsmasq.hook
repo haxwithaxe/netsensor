@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# The MIT License (MIT)
+# copyright (c) 2013 haxwithaxe
+# see LICENSE for details
+
+# dnsmasq dhcp event hook script template
+
 # man page excerpt
 cat - >/dev/null 2>&1 <<EOM
 --dhcp-script=<path>
@@ -33,7 +39,7 @@ add_entry(){
 	mac=$1
 	ip_addr=$2
 	host_name=$3
-
+	
 }
 
 old_entry(){
@@ -67,3 +73,4 @@ case "$action" in
 		echo "This should never happen."
 		;;
 esac
+
