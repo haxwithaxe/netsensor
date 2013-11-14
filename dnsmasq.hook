@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# The MIT License (MIT)
 # copyright (c) 2013 haxwithaxe
 # see LICENSE for details
 
@@ -34,6 +33,10 @@ action=$1
 mac=$2
 ip_addr=$3
 host_name=$4
+
+send_to_db(){
+	
+}
 
 add_entry(){
 	mac=$1
